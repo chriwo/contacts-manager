@@ -113,10 +113,6 @@ class ContactEditController extends AbstractFrontendController
             return new ForwardResponse('edit');
         }
 
-        if (!$this->hasObjectChanges($contact)) {
-            return $this->redirect('edit', 'ContactEdit', 'ContactsManager', ['contact' => $contact]);
-        }
-
         $uploadedFile = $this->processUploadedPhoto();
         if ($uploadedFile instanceof FileInterface) {
             if ($contact->getPhoto() instanceof FileReference) {
