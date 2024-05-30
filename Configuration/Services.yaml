@@ -1,0 +1,13 @@
+# Configuration/Services.yaml
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  StarterTeam\ContactsManager\:
+    resource: '../Classes/*'
+    exclude: '../Classes/Domain/Model/*'
+
+  StarterTeam\ContactsManager\Domain\Repository\ContactEditRepository:
+    public: true

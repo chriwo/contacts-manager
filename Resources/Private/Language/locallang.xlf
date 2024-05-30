@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2024-3-3T09:46:40Z"
+		  product-name="contacts_manager">
+		<header/>
+		<body>
+			<trans-unit id="form.titleUpdateContact">
+				<source>Update contact data</source>
+			</trans-unit>
+			<trans-unit id="form.submitEdit">
+				<source>Submit changed data</source>
+			</trans-unit>
+			<trans-unit id="form.field.email">
+				<source>Email</source>
+			</trans-unit>
+			<trans-unit id="form.field.firstName">
+				<source>First name</source>
+			</trans-unit>
+			<trans-unit id="form.field.lastName">
+				<source>Last name</source>
+			</trans-unit>
+			<trans-unit id="form.field.photo">
+				<source>Photo</source>
+			</trans-unit>
+			<trans-unit id="form.field.salutation">
+				<source>Salutation</source>
+			</trans-unit>
+			<trans-unit id="form.field.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="form.field.uri">
+				<source>Uri</source>
+			</trans-unit>
+
+			<trans-unit id="notLoggedIn">
+				<source>You are not logged in</source>
+			</trans-unit>
+			<trans-unit id="noDataChanged">
+				<source>No changes detected, nothing to update</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

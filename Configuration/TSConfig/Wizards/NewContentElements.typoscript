@@ -1,0 +1,28 @@
+mod {
+  wizards.newContentElement.wizardItems {
+    common {
+      elements {
+        contactsmanager_contactlist {
+          iconIdentifier = ctype-contactsmanager_contactlist
+          title = LLL:EXT:contacts_manager/Resources/Private/Language/locallang_backend.xlf:modWizard.contact_list.title
+          description = LLL:EXT:contacts_manager/Resources/Private/Language/locallang_backend.xlf:modWizard.contact_list.description
+          tt_content_defValues {
+            CType = contactsmanager_contactlist
+          }
+        }
+
+        contactsmanager_contactedit {
+          iconIdentifier = ctype-contactsmanager_contactedit
+          title = LLL:EXT:contacts_manager/Resources/Private/Language/locallang_backend.xlf:modWizard.contact_edit.title
+          description = LLL:EXT:contacts_manager/Resources/Private/Language/locallang_backend.xlf:modWizard.contact_edit.description
+          tt_content_defValues {
+            CType = contactsmanager_contactedit
+          }
+        }
+      }
+
+      show := addToList(contactsmanager_contactlist)
+      show := addToList(contactsmanager_contactedit)
+    }
+  }
+}

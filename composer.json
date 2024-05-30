@@ -1,0 +1,21 @@
+{
+    "name": "starterteam/contacts-manager",
+    "type": "typo3-cms-extension",
+    "description": "Frontend editing of contacts records in frontend",
+    "license": "proprietary",
+    "require": {
+        "php": "^7.4",
+        "typo3/cms-core": "^11.5",
+		"extcode/contacts": "dev-main-custom || ^4.1"
+	},
+	"autoload": {
+		"psr-4": {
+			"StarterTeam\\ContactsManager\\": "Classes"
+		}
+	},
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "contacts_manager"
+        }
+    }
+}

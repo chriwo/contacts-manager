@@ -1,0 +1,42 @@
+<div
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://typo3.org/ns/fluid/ViewHelpers"
+    lang="en"
+>
+    <f:layout name="Default" />
+
+    <f:section name="main">
+        <f:if condition="{contacts}">
+            <f:for each="{contacts}" as="contact">
+                <div class="card" style="width: 18rem;">
+                    <f:if condition="{contact.photo}">
+                        <f:then>
+                            <f:image
+                                image="{contact.photo}"
+                                class="card-img-top"
+                                alt="{contact.firstName} {contact.lastName}"/>
+                        </f:then>
+                        <f:else>
+                            <f:image
+                                src="{settings.media.dummyPhoto}"
+                                class="card-img-top"
+                                alt="{contact.firstName} {contact.lastName}"/>
+                        </f:else>
+                    </f:if>
+                    <div class="card-body">
+                        <p class="card-text">{contact.fullName}</p>
+                        <f:link.action
+                            action="edit"
+                            controller="ContactEdit"
+                            pageUid="{settings.formPageUid}"
+                            arguments="{contact: contact}"
+                            class="btn btn-primary"
+                        >
+                            Edit
+                        </f:link.action>
+                    </div>
+                </div>
+            </f:for>
+        </f:if>
+    </f:section>
+</div>

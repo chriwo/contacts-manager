@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2024-3-3T09:46:40Z"
+		  product-name="contacts_manager">
+		<header/>
+		<body>
+			<trans-unit id="tt_content.CType.I.contactsmanager_contactlist">
+				<source>List assigned contacts</source>
+			</trans-unit>
+			<trans-unit id="tt_content.CType.I.contactsmanager_contactedit">
+				<source>Form to update a contact</source>
+			</trans-unit>
+
+			<trans-unit id="modWizard.contact_list.title">
+				<source>List assigned contacts</source>
+			</trans-unit>
+			<trans-unit id="modWizard.contact_list.description">
+				<source>List assigned contacts</source>
+			</trans-unit>
+			<trans-unit id="modWizard.contact_edit.title">
+				<source>Form to update a contact</source>
+			</trans-unit>
+			<trans-unit id="modWizard.contact_edit.description">
+				<source>Update a contact record in database</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

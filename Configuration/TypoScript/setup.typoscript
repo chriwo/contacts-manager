@@ -1,0 +1,42 @@
+plugin {
+  tx_contactsmanager_contactlist {
+    view {
+      pluginNamespace = contact_list
+
+      templateRootPaths {
+        10 = EXT:contacts_manager/Resources/Private/Templates/
+      }
+    }
+
+    settings {
+      formPageUid = 4683
+      media {
+        dummyPhoto = EXT:contacts_manager/Resources/Public/Images/dummy_staff.jpg
+      }
+    }
+  }
+
+  tx_contactsmanager_contactedit < .tx_contactsmanager_contactlist
+  tx_contactsmanager_contactedit {
+    view {
+      pluginNamespace = contact_edit_edit
+    }
+
+    settings {
+      edit {
+        fields = firstName, lastName, photo
+
+        file {
+          uploadFolder = 1:users/
+
+          # Maximum size for image upload in bytes
+          uploadSize = 25000000
+
+          uploadFileExtension = jpeg, jpg, png
+
+          uploadMimeTypes = image/png, image/jpeg
+        }
+      }
+    }
+  }
+}

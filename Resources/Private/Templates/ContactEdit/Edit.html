@@ -1,0 +1,59 @@
+<div
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://typo3.org/ns/fluid/ViewHelpers"
+    lang="en"
+>
+    <f:layout name="Default" />
+
+    <f:section name="main">
+        <f:render partial="FormNotifications/FlashMessages" arguments="{_all}" />
+
+        <div class="contactsmanager_edit">
+            <f:if condition="{contact}">
+                <f:then>
+                    <f:form
+                        name="contact"
+                        object="{contact}"
+                        action="update"
+                        controller="ContactEdit"
+                        enctype="multipart/form-data"
+                        class="form-horizontal">
+                        <fieldset>
+                            <legend>
+                                <f:translate key="form.titleUpdateContact" />
+                            </legend>
+
+                            <f:form.hidden name="token" value="{token}" />
+
+                            <f:if condition="{settings.edit.fields}">
+                                <f:then>
+                                    <f:for each="{contacts:misc.explode(string:'{settings.edit.fields}')}" as="field">
+                                        <f:render partial="Fields/{contacts:misc.upper(string:'{field}')}" arguments="{_all}" />
+                                    </f:for>
+                                    <f:render partial="Fields/SubmitUpdate" arguments="{_all}" />
+                                </f:then>
+                                <f:else>
+                                    <f:comment>
+                                    <f:render partial="Fields/Email" arguments="{_all}" />
+                                    <f:render partial="Fields/FirstName" arguments="{_all}" />
+                                    <f:render partial="Fields/LastName" arguments="{_all}" />
+                                    <f:render partial="Fields/Photo" arguments="{_all}" />
+                                    <f:render partial="Fields/Salutation" arguments="{_all}" />
+                                    <f:render partial="Fields/Title" arguments="{_all}" />
+                                    <f:render partial="Fields/Uri" arguments="{_all}" />
+                                    </f:comment>
+
+                                    <f:render partial="Fields/Photo" arguments="{_all}" />
+                                    <f:render partial="Fields/SubmitUpdate" arguments="{_all}" />
+                                </f:else>
+                            </f:if>
+                        </fieldset>
+                    </f:form>
+                </f:then>
+                <f:else>
+                    <f:translate key="notLoggedIn" />
+                </f:else>
+            </f:if>
+        </div>
+    </f:section>
+</div>
