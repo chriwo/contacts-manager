@@ -12,3 +12,7 @@ Thumbs.db
 .svn
 .sass-cache
 node_modules
+
+/.build
+/.ddev
+/composer.lock
