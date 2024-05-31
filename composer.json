@@ -20,6 +20,7 @@
 	],
 	"require-dev": {
         "helhum/typo3-console": "^7.1",
+        "helmich/typo3-typoscript-lint": "^3.1",
         "typo3/cms-adminpanel": "^11.5",
         "typo3/cms-belog": "^11.5",
         "typo3/cms-beuser": "^11.5",
@@ -53,7 +54,8 @@
         }
 	},
 	"scripts": {
-		"test:cs": "php-cs-fixer fix --config=./.php-cs-fixer.php -v --dry-run --using-cache no --diff"
+		"test:cs": "php-cs-fixer fix --config=./.php-cs-fixer.php -v --dry-run --using-cache no --diff",
+		"test:typoscript": "typoscript-lint --config=./typoscript-lint.yml"
 	},
     "extra": {
         "typo3/cms": {

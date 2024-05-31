@@ -1,0 +1,12 @@
+paths:
+  - ./Configuration/TypoScript/
+  - ./Configuration/TSConfig/
+
+filePatterns:
+  - "*.typoscript"
+
+sniffs:
+  - class: Indentation
+    parameters:
+      indentPerLevel: 2
+      indentConditions: true
