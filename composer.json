@@ -2,7 +2,7 @@
     "name": "starterteam/contacts-manager",
     "type": "typo3-cms-extension",
     "description": "Frontend editing of contacts records in frontend",
-    "license": "proprietary",
+	"license": "GPL-2.0-or-later",
     "require": {
         "php": "^7.4",
         "typo3/cms-backend": "^11.5",
