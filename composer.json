@@ -52,6 +52,9 @@
             "typo3/class-alias-loader": true
         }
 	},
+	"scripts": {
+		"test:cs": "php-cs-fixer fix --config=./.php-cs-fixer.php -v --dry-run --using-cache no --diff"
+	},
     "extra": {
         "typo3/cms": {
             "extension-key": "contacts_manager",

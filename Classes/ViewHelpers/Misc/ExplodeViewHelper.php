@@ -27,7 +27,7 @@ class ExplodeViewHelper extends AbstractViewHelper
         if (!is_string($string)) {
             throw new InvalidArgumentException(
                 'The argument "string" was registered with type "string", but is of type "' .
-                gettype($string) . '" in view helper "' . get_class($this) . '".',
+                gettype($string) . '" in view helper "' . static::class . '".',
                 1715085850
             );
         }
@@ -36,7 +36,7 @@ class ExplodeViewHelper extends AbstractViewHelper
         if (!is_string($separator)) {
             throw new InvalidArgumentException(
                 'The argument "string" was registered with type "string", but is of type "' .
-                gettype($separator) . '" in view helper "' . get_class($this) . '".',
+                gettype($separator) . '" in view helper "' . static::class . '".',
                 1715085850
             );
         }
@@ -45,7 +45,7 @@ class ExplodeViewHelper extends AbstractViewHelper
         if (!is_bool($trim)) {
             throw new InvalidArgumentException(
                 'The argument "trim" was registered with type "bool", but is of type "' .
-                gettype($trim) . '" in view helper "' . get_class($this) . '".',
+                gettype($trim) . '" in view helper "' . static::class . '".',
                 1715085850
             );
         }

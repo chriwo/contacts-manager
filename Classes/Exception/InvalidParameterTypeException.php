@@ -6,5 +6,4 @@ namespace StarterTeam\ContactsManager\Exception;
 
 class InvalidParameterTypeException extends \Exception
 {
-
 }

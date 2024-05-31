@@ -6,5 +6,4 @@ namespace StarterTeam\ContactsManager\Service;
 
 class NotificationService
 {
-
 }

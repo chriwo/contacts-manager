@@ -5,10 +5,6 @@ declare(strict_types=1);
 namespace StarterTeam\ContactsManager\Domain\Repository;
 
 use StarterTeam\ContactsManager\Domain\Model\ContactEdit;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Resource\FileInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
