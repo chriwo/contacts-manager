@@ -8,6 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 use StarterTeam\ContactsManager\Domain\Model\ContactEdit;
 use StarterTeam\ContactsManager\Domain\Model\FrontendModelInterface;
 use StarterTeam\ContactsManager\Domain\Repository\ContactEditRepository;
+use StarterTeam\ContactsManager\Events\BeforeUpdateContactEvent;
 use StarterTeam\ContactsManager\Service\FileService;
 use StarterTeam\ContactsManager\Service\FormObjectService;
 use TYPO3\CMS\Core\Context\AspectInterface;
@@ -122,10 +123,17 @@ class ContactEditController extends AbstractFrontendController
             $this->fileService->addFileReference($contact, $uploadedFile, 'tx_contacts_domain_model_contact');
         }
 
+        $this->eventDispatcher->dispatch(new BeforeUpdateContactEvent($contact));
+
         $this->contactEditRepository->update($contact);
         $this->persistenceManager->persistAll();
 
-        return $this->redirect('edit', 'ContactEdit', 'ContactsManager', ['contact' => $contact]);
+        return $this->redirect(
+            'edit',
+            'ContactEdit',
+            'ContactsManager',
+            ['contact' => $contact]
+        );
     }
 
     public function deletePhotoAction(ContactEdit $contact): ResponseInterface
