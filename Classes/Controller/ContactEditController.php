@@ -129,7 +129,7 @@ class ContactEditController extends AbstractFrontendController
         $this->contactEditRepository->update($contact);
         $this->persistenceManager->persistAll();
 
-        $this->eventDispatcher->dispatch(new AfterUpdateContactEvent($contact));
+        $this->eventDispatcher->dispatch(new AfterUpdateContactEvent($contact, $this->settings));
 
         return $this->redirect(
             'edit',
