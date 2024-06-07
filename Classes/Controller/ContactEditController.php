@@ -124,7 +124,7 @@ class ContactEditController extends AbstractFrontendController
             $this->fileService->addFileReference($contact, $uploadedFile, 'tx_contacts_domain_model_contact');
         }
 
-        $this->eventDispatcher->dispatch(new BeforeUpdateContactEvent($contact));
+        $this->eventDispatcher->dispatch(new BeforeUpdateContactEvent($contact, $this->settings));
 
         $this->contactEditRepository->update($contact);
         $this->persistenceManager->persistAll();

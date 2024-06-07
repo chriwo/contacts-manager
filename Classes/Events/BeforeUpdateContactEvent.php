@@ -10,14 +10,23 @@ class BeforeUpdateContactEvent
 {
     protected ContactEdit $contact;
 
+    protected array $pluginSettings;
+
     public function __construct(
-        ContactEdit $contact
+        ContactEdit $contact,
+        array $pluginSettings
     ) {
         $this->contact = $contact;
+        $this->pluginSettings = $pluginSettings;
     }
 
     public function getContact(): ContactEdit
     {
         return $this->contact;
+    }
+
+    public function getPluginSettings(): array
+    {
+        return $this->pluginSettings;
     }
 }
