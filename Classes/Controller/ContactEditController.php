@@ -8,6 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 use StarterTeam\ContactsManager\Domain\Model\ContactEdit;
 use StarterTeam\ContactsManager\Domain\Model\FrontendModelInterface;
 use StarterTeam\ContactsManager\Domain\Repository\ContactEditRepository;
+use StarterTeam\ContactsManager\Events\AfterUpdateContactEvent;
 use StarterTeam\ContactsManager\Events\BeforeUpdateContactEvent;
 use StarterTeam\ContactsManager\Service\FileService;
 use StarterTeam\ContactsManager\Service\FormObjectService;
@@ -127,6 +128,8 @@ class ContactEditController extends AbstractFrontendController
 
         $this->contactEditRepository->update($contact);
         $this->persistenceManager->persistAll();
+
+        $this->eventDispatcher->dispatch(new AfterUpdateContactEvent($contact));
 
         return $this->redirect(
             'edit',
