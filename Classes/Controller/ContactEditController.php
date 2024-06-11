@@ -71,6 +71,16 @@ class ContactEditController extends AbstractFrontendController
             $contactRecords = $this->contactEditRepository->findAllContactRecordsOfFrontendUser($frontendUserId);
         }
 
+        if (is_iterable($contactRecords) && count($contactRecords) === 1) {
+            $this->redirect(
+                'edit',
+                'ContactEdit',
+                'ContactsManager',
+                ['contact' => $contactRecords[0]],
+                (int)$this->settings['formPageUid']
+            );
+        }
+
         $this->view->assignMultiple([
             'contacts' => $contactRecords,
         ]);
