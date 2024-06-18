@@ -39,8 +39,8 @@ abstract class AbstractFrontendController extends ActionController
         $allowedFileExtensions = GeneralUtility::trimExplode(',', $this->settings['edit']['file']['uploadFileExtension'], true);
         $allowedMimeTypes = GeneralUtility::trimExplode(',', $this->settings['edit']['file']['uploadMimeTypes'], true);
 
-        if (count($uploadedPhoto) > 0 && $uploadedPhoto['contact']['photo'] instanceof UploadedFile) {
-            $newPhoto = $uploadedPhoto['contact']['photo'];
+        if (count($uploadedPhoto) > 0 && $uploadedPhoto['contact']['photo'][0] instanceof UploadedFile) {
+            $newPhoto = $uploadedPhoto['contact']['photo'][0];
 
             if (in_array($newPhoto->getClientMediaType(), $allowedMimeTypes) &&
                 in_array(pathinfo((string)$newPhoto->getClientFilename())['extension'], $allowedFileExtensions)
@@ -54,7 +54,7 @@ abstract class AbstractFrontendController extends ActionController
                 $uploadFolder = $resourceFactory->getFolderObjectFromCombinedIdentifier($uploadFolderString);
 
                 return $storage->addUploadedFile(
-                    $this->request->getArgument('contact')['photo'],
+                    $newPhoto,
                     $uploadFolder,
                     null,
                     DuplicationBehavior::RENAME
