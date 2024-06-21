@@ -54,7 +54,7 @@ abstract class AbstractFrontendController extends ActionController
                 $uploadFolder = $resourceFactory->getFolderObjectFromCombinedIdentifier($uploadFolderString);
 
                 return $storage->addUploadedFile(
-                    $this->request->getArgument('contact')['photo'],
+                    $this->request->getArgument('contact')['photo'][0],
                     $uploadFolder,
                     null,
                     DuplicationBehavior::RENAME
