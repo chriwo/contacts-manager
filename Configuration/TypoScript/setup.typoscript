@@ -3,16 +3,8 @@ plugin {
     view {
       pluginNamespace = contact_list
 
-      layoutRootPaths {
-        0 = EXT:contacts_manager/Resources/Private/Layouts/
-      }
-
-      partialRootPaths {
-        0 = EXT:contacts_manager/Resources/Private/Partials/
-      }
-
       templateRootPaths {
-        0 = EXT:contacts_manager/Resources/Private/Templates/
+        10 = EXT:contacts_manager/Resources/Private/Templates/
       }
     }
 
