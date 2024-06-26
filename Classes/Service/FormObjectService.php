@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace StarterTeam\ContactsManager\Service;
 
+use RuntimeException;
 use TYPO3\CMS\Core\Context\AspectInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
@@ -63,7 +64,7 @@ class FormObjectService
             $formToken === '' ||
             $this->isSpoof($userAspect, (int)$formValues['__identity'], $allowedRecordsUuidsToEdit, $formToken)
         ) {
-            throw new \RuntimeException('You are not allowed to update this record', 1719292424);
+            throw new RuntimeException('You are not allowed to update this record', 1719292424);
         }
     }
 

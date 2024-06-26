@@ -1,11 +1,12 @@
 <f:flashMessages as="flashMessages">
-	<div class="contactsmanager_status">
-		<div class="contactsmanager_flashmessages">
-			<f:for each="{flashMessages}" as="flashMessage">
-				<div class="typo3-message message-{flashMessage.severity.value}">
-					<div class="message-body">{flashMessage.message}</div>
-				</div>
-			</f:for>
-		</div>
-	</div>
+    <div class="o-flashmessage">
+        <f:for each="{flashMessages}" as="flashMessage">
+            <div class="alert message-{flashMessage.severity}" role="alert">
+                <f:if condition="{flashMessage.title}">
+                    <h4 class="alert-heading">{flashMessage.title}</h4>
+                </f:if>
+                <p class="message-body">{flashMessage.message}</p>
+            </div>
+        </f:for>
+    </div>
 </f:flashMessages>

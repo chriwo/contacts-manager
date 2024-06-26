@@ -147,8 +147,8 @@ class ContactEditController extends ActionController
         } catch (RuntimeException $exception) {
             $this->logger->critical($exception->getMessage());
             $this->addFlashMessage(
-                $exception->getMessage(),
-                '',
+                LocalizationUtility::translate('notLoggedIn', 'ContactsManager'),
+                'Error',
                 AbstractMessage::ERROR
             );
             return new ForwardResponse('edit');
@@ -161,14 +161,14 @@ class ContactEditController extends ActionController
                 ]
             );
             $this->addFlashMessage(
-                $exception->getMessage(),
-                '',
+                LocalizationUtility::translate('errorInFileUpload', 'ContactsManager'),
+                'Error',
                 AbstractMessage::ERROR
             );
             return new ForwardResponse('edit');
         }
 
-        $this->addFlashMessage('Record is finally updated without errors');
+        $this->addFlashMessage(LocalizationUtility::translate('recordIsUpdated', 'ContactsManager'));
 
         return $this->redirect(
             'edit',
