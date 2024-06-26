@@ -38,6 +38,12 @@
 			<trans-unit id="noDataChanged">
 				<source>No changes detected, nothing to update</source>
 			</trans-unit>
+			<trans-unit id="recordIsUpdated">
+				<source>The record is successfully updated</source>
+			</trans-unit>
+			<trans-unit id="errorInFileUpload">
+				<source>Error in file upload</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
