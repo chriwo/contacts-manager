@@ -14,6 +14,9 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
 class FormObjectService
 {
+    public function __construct(private readonly \TYPO3\CMS\Core\Crypto\HashService $hashService)
+    {
+    }
     public function isDirtyObject($object): bool
     {
         foreach (array_keys($object->_getProperties()) as $propertyName) {
@@ -47,7 +50,7 @@ class FormObjectService
 
     public function generateTokenFromUserAspect(int $userId, string $username): string
     {
-        return GeneralUtility::hmac($userId, $username);
+        return $this->hashService->hmac($userId, $username);
     }
 
     public function isRecordUpdateAllowed(

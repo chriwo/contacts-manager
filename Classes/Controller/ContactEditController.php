@@ -18,7 +18,6 @@ use StarterTeam\ContactsManager\Service\FormObjectService;
 use TYPO3\CMS\Core\Context\AspectInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Error\Http\UnauthorizedException;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
@@ -78,7 +77,7 @@ class ContactEditController extends ActionController
         }
 
         if (is_iterable($contactRecords) && count($contactRecords) === 1) {
-            $this->redirect(
+            return $this->redirect(
                 'edit',
                 'ContactEdit',
                 'ContactsManager',
@@ -149,7 +148,7 @@ class ContactEditController extends ActionController
             $this->addFlashMessage(
                 LocalizationUtility::translate('notLoggedIn', 'ContactsManager'),
                 'Error',
-                AbstractMessage::ERROR
+                \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR
             );
             return new ForwardResponse('edit');
         } catch (InvalidFileUploadException $exception) {
@@ -163,7 +162,7 @@ class ContactEditController extends ActionController
             $this->addFlashMessage(
                 LocalizationUtility::translate('errorInFileUpload', 'ContactsManager'),
                 'Error',
-                AbstractMessage::ERROR
+                \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR
             );
             return new ForwardResponse('edit');
         }
@@ -221,7 +220,7 @@ class ContactEditController extends ActionController
             $this->addFlashMessage(
                 LocalizationUtility::translate('noDataChanged', 'ContactsManager'),
                 '',
-                AbstractMessage::NOTICE
+                \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::NOTICE
             );
             return false;
         }

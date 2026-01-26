@@ -12,7 +12,7 @@ class FrontendUserService
 
     public function __construct()
     {
-        $this->frontendUser = $GLOBALS['TSFE']->fe_user;
+        $this->frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
     }
 
     public function getFrontendUserIdColumn(): string
