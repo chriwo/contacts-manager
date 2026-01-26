@@ -1,0 +1,9 @@
+#!/bin/bash
+
+## PHP Code quality
+bin/php-cs-fixer fix -v --dry-run --diff --config=../.php-cs-fixer.php
+bin/phpstan analyse --configuration=../phpstan.neon
+
+## TYPO3 specific
+bin/rector process --config=../rector.php --clear-cache --output-format=console --dry-run
+bin/fractor process --config=../fractor.php --clear-cache --output-format=console --dry-run

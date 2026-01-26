@@ -13,3 +13,19 @@
 *.txt text eol=lf
 *.yaml text eol=lf
 *.yml text eol=lf
+
+/.ddev                          export-ignore
+/.editorconfig                  export-ignore
+/.env                           export-ignore
+/.gitattributes                 export-ignore
+/.github                        export-ignore
+/.gitignore                     export-ignore
+/.project                       export-ignore
+/.php-cs-fixer.php              export-ignore
+/phpstan.neon                   export-ignore
+/phpstan-baseline.neon          export-ignore
+/fractor.php                    export-ignore
+/rector.php                     export-ignore
+/config                         export-ignore
+
+.project/data/db.sql.gz filter=lfs diff=lfs merge=lfs -text

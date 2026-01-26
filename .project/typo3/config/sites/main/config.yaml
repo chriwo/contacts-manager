@@ -1,0 +1,34 @@
+base: '%env(TYPO3_BASEURL)%'
+errorHandling: {  }
+languages:
+  -
+    title: Deutsch
+    enabled: true
+    base: /
+    typo3Language: de
+    locale: de_DE.UTF-8
+    iso-639-1: de
+    navigationTitle: Deutsch
+    hreflang: de_DE
+    direction: ltr
+    flag: de
+    languageId: 0
+  -
+    title: Englisch
+    enabled: true
+    base: /en/
+    typo3Language: en
+    locale: en_EN.UTF-8
+    iso-639-1: en
+    navigationTitle: English
+    hreflang: en_EN
+    direction: ltr
+    flag: gb
+    languageId: 1
+routes: {  }
+routeEnhancers:
+  PageTypeSuffix:
+    type: PageType
+    default: '/'
+rootPageId: 1
+websiteTitle: 'Contacts Extension'
