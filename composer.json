@@ -4,13 +4,13 @@
     "description": "Frontend editing of contacts records in frontend",
 	"license": "GPL-2.0-or-later",
     "require": {
-        "php": "^7.4",
-        "extcode/contacts": "dev-main-custom || ^4.1",
-        "typo3/cms-backend": "^11.5",
-        "typo3/cms-core": "^11.5",
-        "typo3/cms-extbase": "^11.5",
-        "typo3/cms-fluid": "^11.5",
-        "typo3/cms-frontend": "^11.5"
+        "php": "^8.4 || 8.5",
+        "extcode/contacts": "*",
+        "typo3/cms-backend": "^13.4",
+        "typo3/cms-core": "^13.4",
+        "typo3/cms-extbase": "^13.4",
+        "typo3/cms-fluid": "^13.4",
+        "typo3/cms-frontend": "^13.4"
     },
 	"repositories": [
 		{
@@ -19,28 +19,27 @@
 		}
 	],
 	"require-dev": {
-        "helhum/typo3-console": "^7.1",
-        "helmich/typo3-typoscript-lint": "^3.1",
-        "phpstan/extension-installer": "^1.3",
-        "phpstan/phpstan": "^1.11",
-        "saschaegerer/phpstan-typo3": "^1.10",
-        "typo3/cms-adminpanel": "^11.5",
-        "typo3/cms-belog": "^11.5",
-        "typo3/cms-beuser": "^11.5",
-        "typo3/cms-dashboard": "^11.5",
-        "typo3/cms-extensionmanager": "^11.5",
-        "typo3/cms-felogin": "^11.5",
-        "typo3/cms-filelist": "^11.5",
-        "typo3/cms-fluid-styled-content": "^11.5",
-        "typo3/cms-info": "^11.5",
-        "typo3/cms-install": "^11.5",
-        "typo3/cms-lowlevel": "^11.5",
-        "typo3/cms-recordlist": "^11.5",
-        "typo3/cms-rte-ckeditor": "^11.5",
-        "typo3/cms-setup": "^11.5",
-        "typo3/cms-t3editor": "^11.5",
-        "typo3/cms-tstemplate": "^11.5",
-        "typo3/coding-standards": "^0.6.1"
+		"a9f/typo3-fractor": "^0.5",
+		"helhum/dotenv-connector": "^3.2",
+		"helhum/typo3-console": "^8.3",
+		"phpstan/extension-installer": "^1.4",
+		"phpstan/phpstan": "2.1.33",
+		"saschaegerer/phpstan-typo3": "^2.1",
+		"ssch/typo3-rector": "^3.11",
+        "typo3/cms-adminpanel": "^13.4",
+        "typo3/cms-belog": "^13.4",
+        "typo3/cms-beuser": "^13.4",
+        "typo3/cms-dashboard": "^13.4",
+        "typo3/cms-extensionmanager": "^13.4",
+        "typo3/cms-felogin": "^13.4",
+        "typo3/cms-filelist": "^13.4",
+        "typo3/cms-fluid-styled-content": "^13.4",
+        "typo3/cms-info": "^13.4",
+        "typo3/cms-lowlevel": "^13.4",
+        "typo3/cms-rte-ckeditor": "^13.4",
+        "typo3/cms-setup": "^13.4",
+        "typo3/cms-tstemplate": "^13.4",
+        "typo3/coding-standards": "^0.8.0"
     },
 	"autoload": {
 		"psr-4": {
@@ -50,23 +49,52 @@
 	"config": {
 		"bin-dir": ".build/bin",
 		"vendor-dir": ".build/vendor",
+		"discard-changes": true,
+		"optimize-autoloader": true,
 		"sort-packages": true,
         "allow-plugins": {
-            "typo3/cms-composer-installers": true,
+            "a9f/fractor-extension-installer": true,
+            "helhum/dotenv-connector": true,
+            "phpstan/extension-installer": true,
             "typo3/class-alias-loader": true,
-            "phpstan/extension-installer": true
+            "typo3/cms-composer-installers": true
         }
 	},
 	"scripts": {
-		"test:phpstan": "phpstan analyse --debug",
-		"test:cs": "php-cs-fixer fix --config=./.php-cs-fixer.php -v --dry-run --using-cache no --diff",
-		"test:typoscript": "typoscript-lint --config=./typoscript-lint.yml"
+		"test:cgl": [
+			".build/bin/php-cs-fixer fix --config=.php-cs-fixer.php -v --using-cache=no"
+		],
+		"test:cgl:dry-run": [
+			".build/bin/php-cs-fixer fix --config=.php-cs-fixer.php -v --using-cache=no --dry-run --diff"
+		],
+		"test:phpstan:analyse": [
+			".build/bin/phpstan analyse -c phpstan.neon"
+		],
+		"test:rector:process": [
+			".build/bin/rector process -c rector.php --clear-cache --output-format=console"
+		],
+		"test:rector:process:dry-run": [
+			".build/bin/rector process -c rector.php --clear-cache --output-format=console --dry-run"
+		],
+		"test:fractor:process": [
+			".build/bin/fractor process -c fractor.php --clear-cache --output-format=console"
+		],
+		"test:fractor:process:dry-run": [
+			".build/bin/fractor process -c fractor.php --clear-cache --output-format=console --dry-run"
+		],
+		"test:all": [
+			"@test:phpstan:analyse",
+			"@test:rector:process",
+			"@test:fractor:process",
+			"@test:cgl"
+		]
 	},
     "extra": {
         "typo3/cms": {
             "extension-key": "contacts_manager",
-			"app-dir": ".build",
 			"web-dir": ".build/public"
         }
-    }
+    },
+	"minimum-stability": "dev",
+	"prefer-stable": true
 }
