@@ -17,7 +17,7 @@ use TYPO3\CMS\Extbase\Mvc\Request;
 
 class FileService
 {
-    public function __construct(private readonly \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool, private readonly \TYPO3\CMS\Core\Resource\ResourceFactory $resourceFactory)
+    public function __construct(private readonly ConnectionPool $connectionPool, private readonly ResourceFactory $resourceFactory)
     {
     }
     public function deletePhoto(FileReference $file): void

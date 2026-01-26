@@ -27,6 +27,8 @@ use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 
 class ContactEditController extends ActionController
 {
@@ -117,7 +119,7 @@ class ContactEditController extends ActionController
      * @throws IllegalObjectTypeException
      * @throws StopActionException
      * @throws UnknownObjectException
-     * @throws \TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException
+     * @throws AspectPropertyNotFoundException
      */
     public function updateAction(ContactEdit $contact): ForwardResponse
     {
@@ -148,7 +150,7 @@ class ContactEditController extends ActionController
             $this->addFlashMessage(
                 LocalizationUtility::translate('notLoggedIn', 'ContactsManager'),
                 'Error',
-                \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
             return new ForwardResponse('edit');
         } catch (InvalidFileUploadException $exception) {
@@ -162,7 +164,7 @@ class ContactEditController extends ActionController
             $this->addFlashMessage(
                 LocalizationUtility::translate('errorInFileUpload', 'ContactsManager'),
                 'Error',
-                \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
             return new ForwardResponse('edit');
         }
@@ -220,7 +222,7 @@ class ContactEditController extends ActionController
             $this->addFlashMessage(
                 LocalizationUtility::translate('noDataChanged', 'ContactsManager'),
                 '',
-                \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::NOTICE
+                ContextualFeedbackSeverity::NOTICE
             );
             return false;
         }

@@ -11,10 +11,11 @@ use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Core\Crypto\HashService;
 
 class FormObjectService
 {
-    public function __construct(private readonly \TYPO3\CMS\Core\Crypto\HashService $hashService)
+    public function __construct(private readonly HashService $hashService)
     {
     }
     public function isDirtyObject($object): bool
