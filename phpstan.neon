@@ -1,0 +1,24 @@
+includes:
+  - phpstan-baseline.neon
+parameters:
+  level: max
+  reportUnmatchedIgnoredErrors: true
+  paths:
+    - ./
+  excludePaths:
+    - .build
+    - .ddev
+    - .idea
+    - .project
+    - config (?)
+    - var (?)
+    - Resources
+  ignoreErrors:
+    -
+      message: "#^Cannot call method fetchAllAssociative\\(\\) on Doctrine\\\\DBAL\\\\Result\\|int\\.$#"
+      paths:
+        - "*"
+    -
+      message: "#^Cannot call method fetchOne\\(\\) on Doctrine\\\\DBAL\\\\Result\\|int\\.$#"
+      paths:
+        - "*"

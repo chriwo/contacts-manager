@@ -1,48 +1,48 @@
 <?php
 
-$config = \TYPO3\CodingStandards\CsFixerConfig::create();
-$config
+use TYPO3\CodingStandards\CsFixerConfig;
+
+$csFixerConfig = CsFixerConfig::create();
+$csFixerConfig
     ->getFinder()
     ->in([
-        __DIR__ . '/',
+        __DIR__,
     ])
     ->exclude([
         '.build',
         '.ddev',
-        '.project',
-    ])
-;
+        '.github',
+        'config',
+        'var',
+    ]);
 
-$deprecatedRulesWithReplacement = [
-    'braces' => '',
-    'compact_nullable_typehint' => 'compact_nullable_type_declaration',
-    'function_typehint_space' => 'type_declaration_spaces',
-    'new_with_braces' => 'new_with_parentheses',
-    'no_trailing_comma_in_singleline_array' => 'no_trailing_comma_in_singleline',
+// replace deprecated rules
+$replacements = [
+    '@PER-CS1.0' => '@PER-CS1x0',
 ];
-
-$defaultRules = $config->getRules();
-foreach ($deprecatedRulesWithReplacement as $deprecatedRule => $replacementRule) {
-    if (isset($defaultRules[$deprecatedRule])) {
-        if (!empty($replacementRule)) {
-            $defaultRules[$replacementRule] =$defaultRules[$deprecatedRule];
-        }
-
-        unset($defaultRules[$deprecatedRule]);
+$rules = $csFixerConfig->getRules();
+foreach ($replacements as $deprecatedRule => $replacementRule) {
+    if (array_key_exists($deprecatedRule, $rules)) {
+        $deprecatedRuleValue = $rules[$deprecatedRule];
+        $rules[$replacementRule] = $deprecatedRuleValue;
+        unset($rules[$deprecatedRule]);
     }
 }
 
-// add own rule configuration
-$customRules = [
-    'blank_line_after_namespace' => true,
-    'declare_strict_types' => false,
-    'no_blank_lines_after_class_opening' => true,
-    'phpdoc_to_param_type' => true,
-    'phpdoc_to_property_type' => true,
-    'phpdoc_to_return_type' => true,
-    'blank_lines_before_namespace' => true,
-];
+$csFixerConfig->setRules(array_replace_recursive(
+    $rules,
+    [
+        'fully_qualified_strict_types' => [
+            'import_symbols' => true,
+            'leading_backslash_in_global_namespace' => false,
+        ],
+        'global_namespace_import' => false,
+        'header_comment' => ['header' => ''],
+        'single_line_comment_style' => ['comment_types' => ['hash']],
+        'single_line_empty_body' => false,
+        'no_trailing_comma_in_singleline' => true,
+        'php_unit_test_annotation' => ['style' => 'annotation'],
+    ]
+));
 
-$config->setRules(array_merge_recursive($defaultRules, $customRules));
-
-return $config;
+return $csFixerConfig;

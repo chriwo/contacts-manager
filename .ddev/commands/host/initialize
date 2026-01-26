@@ -1,0 +1,20 @@
+#!/bin/bash
+
+## Description: Build a test system with ddev and import given test data
+## Usage: initialize
+## Example: "ddev initialize"
+
+if ! command -v "git-lfs" &> /dev/null
+then
+    echo "COMMAND "git lfs" could not be found"
+    echo "Please install git-lfs support, see: https://git-lfs.github.com/"
+    exit
+fi
+
+ddev import-db --file=.project/data/db.sql.gz
+
+cp .build/vendor/typo3/cms-install/Resources/Private/FolderStructureTemplateFiles/root-htaccess .build/public/.htaccess
+mkdir -p config && cp -Rf .project/typo3/config/ config
+
+ddev exec php ./bin/typo3 database:updateschema
+ddev exec php ./bin/typo3 install:fixfolderstructure
