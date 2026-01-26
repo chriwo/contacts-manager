@@ -13,11 +13,13 @@ use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Core\Crypto\HashService;
 
-class FormObjectService
+readonly class FormObjectService
 {
-    public function __construct(private readonly HashService $hashService)
-    {
+    public function __construct(
+        private HashService $hashService
+    ) {
     }
+
     public function isDirtyObject($object): bool
     {
         foreach (array_keys($object->_getProperties()) as $propertyName) {
@@ -59,7 +61,7 @@ class FormObjectService
         AspectInterface $userAspect,
         string $formArgument,
         string $allowedRecordsUuidsToEdit
-    ) {
+    ): void {
         $formValues = $request->hasArgument($formArgument) ? $request->getArgument($formArgument) : [];
         $formToken = $request->hasArgument('token') ? $request->getArgument('token') : '';
 

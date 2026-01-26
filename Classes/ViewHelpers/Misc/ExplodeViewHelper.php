@@ -19,9 +19,9 @@ class ExplodeViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @return false|string[]
+     * @return string[]
      */
-    public function render()
+    public function render(): array
     {
         $string = $this->arguments['string'];
         if (!is_string($string)) {

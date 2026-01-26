@@ -13,24 +13,6 @@ parameters:
 			path: Classes/Controller/ContactEditController.php
 
 		-
-			message: '#^Method StarterTeam\\ContactsManager\\Controller\\ContactEditController\:\:initializeEditAction\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: Classes/Controller/ContactEditController.php
-
-		-
-			message: '#^Method StarterTeam\\ContactsManager\\Controller\\ContactEditController\:\:updateAction\(\) should return TYPO3\\CMS\\Extbase\\Http\\ForwardResponse but returns Psr\\Http\\Message\\ResponseInterface\.$#'
-			identifier: return.type
-			count: 1
-			path: Classes/Controller/ContactEditController.php
-
-		-
-			message: '#^PHPDoc tag @throws with type TYPO3\\CMS\\Core\\Context\\Exception\\AspectPropertyNotFoundException\|TYPO3\\CMS\\Extbase\\Mvc\\Exception\\StopActionException\|TYPO3\\CMS\\Extbase\\Persistence\\Exception\\IllegalObjectTypeException\|TYPO3\\CMS\\Extbase\\Persistence\\Exception\\UnknownObjectException is not subtype of Throwable$#'
-			identifier: throws.notThrowable
-			count: 1
-			path: Classes/Controller/ContactEditController.php
-
-		-
 			message: '#^Parameter \#1 \$messageBody of method TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ActionController\:\:addFlashMessage\(\) expects string, string\|null given\.$#'
 			identifier: argument.type
 			count: 4
@@ -85,12 +67,6 @@ parameters:
 			path: Classes/Events/AfterUpdateContactEvent.php
 
 		-
-			message: '#^Property StarterTeam\\ContactsManager\\Events\\AfterUpdateContactEvent\:\:\$pluginSettings type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Classes/Events/AfterUpdateContactEvent.php
-
-		-
 			message: '#^Method StarterTeam\\ContactsManager\\Events\\BeforeUpdateContactEvent\:\:__construct\(\) has parameter \$pluginSettings with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -98,12 +74,6 @@ parameters:
 
 		-
 			message: '#^Method StarterTeam\\ContactsManager\\Events\\BeforeUpdateContactEvent\:\:getPluginSettings\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Classes/Events/BeforeUpdateContactEvent.php
-
-		-
-			message: '#^Property StarterTeam\\ContactsManager\\Events\\BeforeUpdateContactEvent\:\:\$pluginSettings type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Classes/Events/BeforeUpdateContactEvent.php
@@ -255,12 +225,6 @@ parameters:
 		-
 			message: '#^Method StarterTeam\\ContactsManager\\Service\\FormObjectService\:\:isDirtyObject\(\) has parameter \$object with no type specified\.$#'
 			identifier: missingType.parameter
-			count: 1
-			path: Classes/Service/FormObjectService.php
-
-		-
-			message: '#^Method StarterTeam\\ContactsManager\\Service\\FormObjectService\:\:isRecordUpdateAllowed\(\) has no return type specified\.$#'
-			identifier: missingType.return
 			count: 1
 			path: Classes/Service/FormObjectService.php
 

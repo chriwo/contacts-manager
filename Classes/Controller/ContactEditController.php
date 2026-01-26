@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
@@ -60,7 +59,7 @@ class ContactEditController extends ActionController
         $this->logger = $logger;
     }
 
-    public function initializeEditAction()
+    public function initializeEditAction(): void
     {
         $this->skipPhotoPropertyFromPropertyMapping();
     }
@@ -117,11 +116,10 @@ class ContactEditController extends ActionController
 
     /**
      * @throws IllegalObjectTypeException
-     * @throws StopActionException
      * @throws UnknownObjectException
      * @throws AspectPropertyNotFoundException
      */
-    public function updateAction(ContactEdit $contact): ForwardResponse
+    public function updateAction(ContactEdit $contact): ResponseInterface
     {
         try {
             $userId = $this->userAspect->get('id');

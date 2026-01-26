@@ -8,16 +8,10 @@ use StarterTeam\ContactsManager\Domain\Model\ContactEdit;
 
 class BeforeUpdateContactEvent
 {
-    protected ContactEdit $contact;
-
-    protected array $pluginSettings;
-
     public function __construct(
-        ContactEdit $contact,
-        array $pluginSettings
+        protected ContactEdit $contact,
+        protected array $pluginSettings,
     ) {
-        $this->contact = $contact;
-        $this->pluginSettings = $pluginSettings;
     }
 
     public function getContact(): ContactEdit

@@ -10,11 +10,7 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 
 class ContactEditRepository extends Repository
 {
-    /**
-     * @param int $frontendUserId
-     * @return object[]|QueryResultInterface
-     */
-    public function findAllContactRecordsOfFrontendUser(int $frontendUserId)
+    public function findAllContactRecordsOfFrontendUser(int $frontendUserId): QueryResultInterface
     {
         $query = $this->createQuery();
         $query->getQuerySettings()->setRespectStoragePage(false);
