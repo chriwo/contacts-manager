@@ -17,6 +17,9 @@ use TYPO3\CMS\Extbase\Mvc\Request;
 
 class FileService
 {
+    public function __construct(private readonly \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool, private readonly \TYPO3\CMS\Core\Resource\ResourceFactory $resourceFactory)
+    {
+    }
     public function deletePhoto(FileReference $file): void
     {
         $this->deleteFileFromFileSystem($file);
@@ -29,7 +32,7 @@ class FileService
         string $tableName,
         string $property = 'photo'
     ): void {
-        GeneralUtility::makeInstance(ConnectionPool::class)
+        $this->connectionPool
             ->getConnectionForTable('sys_file_reference')
             ->insert(
                 'sys_file_reference',
@@ -78,7 +81,7 @@ class FileService
             );
         }
 
-        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+        $resourceFactory = $this->resourceFactory;
         $storage = $resourceFactory->getStorageObjectFromCombinedIdentifier($uploadFolderString);
         $parts = GeneralUtility::trimExplode(':', $uploadFolderString);
         if (!$storage->hasFolder($parts[1])) {
@@ -101,7 +104,7 @@ class FileService
 
     private function deleteFileReference(FileReference $file): void
     {
-        GeneralUtility::makeInstance(ConnectionPool::class)
+        $this->connectionPool
             ->getConnectionForTable('sys_file_reference')
             ->delete(
                 'sys_file_reference',
