@@ -1,5 +1,7 @@
 <?php
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
 defined('TYPO3') || die();
 
 (function () {
@@ -29,7 +31,7 @@ defined('TYPO3') || die();
         'showitem' => implode(',', $showItem),
     ];
 
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
+    ExtensionManagementUtility::addPlugin(
         [
             $translateFile . 'tt_content.CType.I.' . $cType,
             $cType,

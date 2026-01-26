@@ -1,9 +1,10 @@
 <?php
 
 declare(strict_types=1);
+use StarterTeam\ContactsManager\Domain\Model\ContactEdit;
 
 return [
-    \StarterTeam\ContactsManager\Domain\Model\ContactEdit::class => [
+    ContactEdit::class => [
         'tableName' => 'tx_contacts_domain_model_contact',
         'properties' => [
             'assignedFrontendUser' => [

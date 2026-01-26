@@ -1,28 +1,30 @@
 <?php
 
 declare(strict_types=1);
+use StarterTeam\ContactsManager\Controller\ContactEditController;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
 $GLOBALS['TYPO3_CONF_VARS']['EXT']['contacts']['classes']['Domain/Model/Contact']['contacts_manager'] = 'contacts_manager';
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['contacts'][] = 'StarterTeam\\ContactsManager\\ViewHelpers';
 
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+ExtensionUtility::configurePlugin(
     'ContactsManager',
     'ContactList',
     [
-        \StarterTeam\ContactsManager\Controller\ContactEditController::class => 'list',
+        ContactEditController::class => 'list',
     ],
     [],
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );
 
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+ExtensionUtility::configurePlugin(
     'ContactsManager',
     'ContactEdit',
     [
-        \StarterTeam\ContactsManager\Controller\ContactEditController::class => 'edit,update,deletePhoto',
+        ContactEditController::class => 'edit,update,deletePhoto',
     ],
     [
-        \StarterTeam\ContactsManager\Controller\ContactEditController::class => 'edit,update,deletePhoto',
+        ContactEditController::class => 'edit,update,deletePhoto',
     ],
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
 );
