@@ -35,7 +35,7 @@ plugin {
 
           uploadFileExtension = jpeg, jpg, png
 
-          uploadMimeTypes = image/png, image/jpeg
+          uploadMimeTypes = image/png, image/jpeg, image/jpg
         }
       }
     }
