@@ -33,30 +33,15 @@ class ContactEditController extends ActionController
 {
     protected AspectInterface $userAspect;
 
-    protected PersistenceManager $persistenceManager;
-
-    protected FileService $fileService;
-
-    protected FormObjectService $formObjectService;
-
-    protected ContactEditRepository $contactEditRepository;
-
-    protected LoggerInterface $logger;
-
     public function __construct(
         Context $context,
-        PersistenceManager $persistenceManager,
-        FileService $fileService,
-        FormObjectService $formObjectService,
-        ContactEditRepository $contactEditRepository,
-        LoggerInterface $logger
+        protected readonly PersistenceManager $persistenceManager,
+        protected readonly FileService $fileService,
+        protected readonly FormObjectService $formObjectService,
+        protected readonly ContactEditRepository $contactEditRepository,
+        protected readonly LoggerInterface $logger
     ) {
         $this->userAspect = $context->getAspect('frontend.user');
-        $this->persistenceManager = $persistenceManager;
-        $this->fileService = $fileService;
-        $this->formObjectService = $formObjectService;
-        $this->contactEditRepository = $contactEditRepository;
-        $this->logger = $logger;
     }
 
     public function initializeEditAction(): void
