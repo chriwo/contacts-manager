@@ -1,0 +1,13 @@
+plugin {
+  tx_contactsmanager {
+    view {
+      layoutRootPath = EXT:contacts_manager/Resources/Private/Layouts/
+      partialRootPaths = EXT:contacts_manager/Resources/Private/Partials/
+      templateRootPaths = EXT:contacts_manager/Resources/Private/Templates/
+    }
+
+    settings {
+      formPageUid =
+    }
+  }
+}

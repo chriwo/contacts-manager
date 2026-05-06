@@ -1,36 +1,29 @@
 plugin {
-  tx_contactsmanager_contactlist {
+  tx_contactsmanager {
     view {
-      pluginNamespace = contact_list
-
       layoutRootPaths {
         0 = EXT:contacts_manager/Resources/Private/Layouts/
+        1 = {$plugin.tx_contactsmanager.view.layoutRootPath}
       }
 
       partialRootPaths {
         0 = EXT:contacts_manager/Resources/Private/Partials/
+        1 = {$plugin.tx_contactsmanager.view.partialRootPath}
       }
 
       templateRootPaths {
         0 = EXT:contacts_manager/Resources/Private/Templates/
+        1 = {$plugin.tx_contactsmanager.view.templateRootPath}
       }
     }
 
     settings {
-      formPageUid = 4683
+      formPageUid = {$plugin.tx_contactsmanager.settings.formPageUid}
+
       media {
         dummyPhoto = EXT:contacts_manager/Resources/Public/Images/dummy_staff.jpg
       }
-    }
-  }
 
-  tx_contactsmanager_contactedit < .tx_contactsmanager_contactlist
-  tx_contactsmanager_contactedit {
-    view {
-      pluginNamespace = contact_edit_edit
-    }
-
-    settings {
       edit {
         fields = firstName, lastName, photo
 
@@ -46,5 +39,13 @@ plugin {
         }
       }
     }
+  }
+
+  tx_contactsmanager_contactlist {
+    pluginNamespace = tx_contactsmanager
+  }
+
+  tx_contactsmanager_contactedit {
+    pluginNamespace = tx_contactsmanager
   }
 }
