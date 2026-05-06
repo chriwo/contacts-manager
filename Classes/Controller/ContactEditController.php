@@ -15,8 +15,7 @@ use StarterTeam\ContactsManager\Events\BeforeUpdateContactEvent;
 use StarterTeam\ContactsManager\Exception\InvalidFileUploadException;
 use StarterTeam\ContactsManager\Service\FileService;
 use StarterTeam\ContactsManager\Service\FormObjectService;
-use TYPO3\CMS\Core\Context\AspectInterface;
-use TYPO3\CMS\Core\Context\Context;
+use StarterTeam\ContactsManager\Service\FrontendUserService;
 use TYPO3\CMS\Core\Error\Http\UnauthorizedException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
@@ -31,17 +30,21 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 
 class ContactEditController extends ActionController
 {
-    protected AspectInterface $userAspect;
-
     public function __construct(
-        Context $context,
+        protected readonly FrontendUserService $frontendUserService,
         protected readonly PersistenceManager $persistenceManager,
         protected readonly FileService $fileService,
         protected readonly FormObjectService $formObjectService,
         protected readonly ContactEditRepository $contactEditRepository,
-        protected readonly LoggerInterface $logger
+        protected readonly LoggerInterface $logger,
     ) {
-        $this->userAspect = $context->getAspect('frontend.user');
+    }
+
+    public function initializeAction(): void
+    {
+        if (!$this->frontendUserService->isFrontendUserLoggedIn()) {
+            throw new RuntimeException('User is not authenticated', 1719294448);
+        }
     }
 
     public function initializeEditAction(): void
@@ -57,7 +60,7 @@ class ContactEditController extends ActionController
     public function listAction(): ResponseInterface
     {
         $contactRecords = null;
-        $frontendUserId = $this->userAspect->get('id');
+        $frontendUserId = $this->frontendUserService->getCurrentFrontendUserId();
         if (is_int($frontendUserId) && $frontendUserId > 0) {
             $contactRecords = $this->contactEditRepository->findAllContactRecordsOfFrontendUser($frontendUserId);
         }
@@ -81,19 +84,9 @@ class ContactEditController extends ActionController
 
     public function editAction(ContactEdit $contact): ResponseInterface
     {
-        $userId = $this->userAspect->get('id');
-        if (!is_int($userId) || $userId <= 0) {
-            throw new RuntimeException('User is not authenticated', 1719294448);
-        }
-
-        $username = $this->userAspect->get('username');
-        if (!is_string($username)) {
-            throw new RuntimeException('User is not authenticated', 1719294457);
-        }
-
         $this->view->assignMultiple([
             'contact' => $contact,
-            'token' => $this->formObjectService->generateTokenFromUserAspect($userId, $username),
+            'token' => $this->formObjectService->generateTokenFromUserAspect(),
         ]);
 
         return $this->htmlResponse();
@@ -107,13 +100,10 @@ class ContactEditController extends ActionController
     public function updateAction(ContactEdit $contact): ResponseInterface
     {
         try {
-            $userId = $this->userAspect->get('id');
-            if (!is_int($userId) || $userId <= 0) {
-                throw new RuntimeException('User is not authenticated', 1719294448);
-            }
-
-            $allowedContactsToEditByUser = $this->contactEditRepository->findAllAllowedContactsOfFrontendUser($userId);
-            $this->formObjectService->isRecordUpdateAllowed($this->request, $this->userAspect, 'contact', $allowedContactsToEditByUser);
+            $allowedContactsToEditByUser = $this->contactEditRepository->findAllAllowedContactsOfFrontendUser(
+                $this->frontendUserService->getCurrentFrontendUserId()
+            );
+            $this->formObjectService->isRecordUpdateAllowed($this->request, 'contact', $allowedContactsToEditByUser);
 
             $uploadedFile = $this->fileService->processUploadedPhoto($this->settings, $this->request);
             if ($contact->getPhoto() instanceof FileReference) {
@@ -164,12 +154,9 @@ class ContactEditController extends ActionController
 
     public function deletePhotoAction(ContactEdit $contact): ResponseInterface
     {
-        $userId = $this->userAspect->get('id');
-        if (!is_int($userId) || $userId <= 0) {
-            throw new RuntimeException('User is not authenticated', 1719294448);
-        }
-
-        $allowedContactsToEditByUser = $this->contactEditRepository->findAllAllowedContactsOfFrontendUser($userId);
+        $allowedContactsToEditByUser = $this->contactEditRepository->findAllAllowedContactsOfFrontendUser(
+            $this->frontendUserService->getCurrentFrontendUserId()
+        );
         $contactValues = $this->request->hasArgument('contact') ? $this->request->getArgument('contact') : [];
 
         if (empty($contactValues) ||

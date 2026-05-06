@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace StarterTeam\ContactsManager\Service;
 
 use RuntimeException;
-use TYPO3\CMS\Core\Context\AspectInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
@@ -17,7 +16,8 @@ use TYPO3\CMS\Core\Crypto\HashService;
 readonly class FormObjectService
 {
     public function __construct(
-        private HashService $hashService
+        private FrontendUserService $frontendUserService,
+        private HashService $hashService,
     ) {
     }
 
@@ -52,18 +52,16 @@ readonly class FormObjectService
         return false;
     }
 
-    /**
-     * @param positive-int $userId
-     * @param non-empty-string $username
-     */
-    public function generateTokenFromUserAspect(int $userId, string $username): string
+    public function generateTokenFromUserAspect(): string
     {
-        return $this->hashService->hmac(StringUtility::cast($userId), $username);
+        $userId = $this->frontendUserService->getCurrentFrontendUserId();
+        $username = $this->frontendUserService->getFrontendUserProperty('username');
+
+        return $this->hashService->hmac(StringUtility::cast($userId), StringUtility::cast($username));
     }
 
     public function isRecordUpdateAllowed(
         Request $request,
-        AspectInterface $userAspect,
         string $formArgument,
         string $allowedRecordsUuidsToEdit
     ): void {
@@ -73,16 +71,16 @@ readonly class FormObjectService
         if (empty($formValues) ||
             (int)$formValues['__identity'] === null ||
             $formToken === '' ||
-            $this->isSpoof($userAspect, (int)$formValues['__identity'], $allowedRecordsUuidsToEdit, $formToken)
+            $this->isSpoof((int)$formValues['__identity'], $allowedRecordsUuidsToEdit, $formToken)
         ) {
             throw new RuntimeException('You are not allowed to update this record', 1719292424);
         }
     }
 
-    public function isSpoof(AspectInterface $userAspect, int $contactIdentity, string $allowedRecordsUuidsToEdit, string $receivedToken): bool
+    public function isSpoof(int $contactIdentity, string $allowedRecordsUuidsToEdit, string $receivedToken): bool
     {
         $errorOnProfileUpdate = false;
-        $knownToken = $this->generateTokenFromUserAspect($userAspect->get('id'), StringUtility::cast($userAspect->get('username')));
+        $knownToken = $this->generateTokenFromUserAspect();
 
         if ($receivedToken === '' || !hash_equals($knownToken, $receivedToken)) {
             $errorOnProfileUpdate = true;
