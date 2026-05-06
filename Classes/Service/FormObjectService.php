@@ -7,6 +7,7 @@ namespace StarterTeam\ContactsManager\Service;
 use RuntimeException;
 use TYPO3\CMS\Core\Context\AspectInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
@@ -51,9 +52,13 @@ readonly class FormObjectService
         return false;
     }
 
+    /**
+     * @param positive-int $userId
+     * @param non-empty-string $username
+     */
     public function generateTokenFromUserAspect(int $userId, string $username): string
     {
-        return $this->hashService->hmac($userId, $username);
+        return $this->hashService->hmac(StringUtility::cast($userId), $username);
     }
 
     public function isRecordUpdateAllowed(
@@ -77,7 +82,7 @@ readonly class FormObjectService
     public function isSpoof(AspectInterface $userAspect, int $contactIdentity, string $allowedRecordsUuidsToEdit, string $receivedToken): bool
     {
         $errorOnProfileUpdate = false;
-        $knownToken = $this->generateTokenFromUserAspect($userAspect->get('id'), (string)$userAspect->get('username'));
+        $knownToken = $this->generateTokenFromUserAspect($userAspect->get('id'), StringUtility::cast($userAspect->get('username')));
 
         if ($receivedToken === '' || !hash_equals($knownToken, $receivedToken)) {
             $errorOnProfileUpdate = true;
@@ -85,7 +90,7 @@ readonly class FormObjectService
 
         //check if the logged user is allowed to edit / delete this record
         if ($contactIdentity > 0
-            && !GeneralUtility::inList($allowedRecordsUuidsToEdit, $contactIdentity)
+            && !GeneralUtility::inList($allowedRecordsUuidsToEdit, StringUtility::cast($contactIdentity))
         ) {
             $errorOnProfileUpdate = false;
         }
