@@ -6,6 +6,10 @@ plugin {
       templateRootPaths = EXT:contacts_manager/Resources/Private/Templates/
     }
 
+    persistence {
+      storagePid =
+    }
+
     settings {
       formPageUid =
     }

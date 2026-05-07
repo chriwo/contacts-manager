@@ -7,7 +7,7 @@ namespace StarterTeam\ContactsManager\Service;
 use RuntimeException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
@@ -61,7 +61,7 @@ readonly class FormObjectService
     }
 
     public function isRecordUpdateAllowed(
-        Request $request,
+        RequestInterface $request,
         string $formArgument,
         string $allowedRecordsUuidsToEdit
     ): void {

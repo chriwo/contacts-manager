@@ -1,7 +1,7 @@
 <f:flashMessages as="flashMessages">
     <div class="o-flashmessage">
         <f:for each="{flashMessages}" as="flashMessage">
-            <div class="alert message-{flashMessage.severity}" role="alert">
+            <div class="alert alert-{flashMessage.severity.cssClass}" role="alert">
                 <f:if condition="{flashMessage.title}">
                     <h4 class="alert-heading">{flashMessage.title}</h4>
                 </f:if>

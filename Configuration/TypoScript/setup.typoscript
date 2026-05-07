@@ -17,6 +17,10 @@ plugin {
       }
     }
 
+    persistence {
+      storagePid = {$plugin.tx_contactsmanager.persistence.storagePid}
+    }
+
     settings {
       formPageUid = {$plugin.tx_contactsmanager.settings.formPageUid}
 
@@ -31,11 +35,11 @@ plugin {
           uploadFolder = 1:users/
 
           # Maximum size for image upload in bytes
-          uploadSize = 25000000
+          uploadSize = 5M
 
           uploadFileExtension = jpeg, jpg, png
 
-          uploadMimeTypes = image/png, image/jpeg, image/jpg
+          uploadMimeTypes = image/png, image/jpeg
         }
       }
     }

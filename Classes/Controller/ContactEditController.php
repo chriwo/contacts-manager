@@ -8,27 +8,24 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use StarterTeam\ContactsManager\Domain\Model\ContactEdit;
-use StarterTeam\ContactsManager\Domain\Model\FrontendModelInterface;
 use StarterTeam\ContactsManager\Domain\Repository\ContactEditRepository;
 use StarterTeam\ContactsManager\Events\AfterUpdateContactEvent;
 use StarterTeam\ContactsManager\Events\BeforeUpdateContactEvent;
-use StarterTeam\ContactsManager\Exception\InvalidFileUploadException;
 use StarterTeam\ContactsManager\Service\FileService;
 use StarterTeam\ContactsManager\Service\FormObjectService;
 use StarterTeam\ContactsManager\Service\FrontendUserService;
+use StarterTeam\ContactsManager\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Error\Http\UnauthorizedException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
-use TYPO3\CMS\Extbase\Http\ForwardResponse;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
-use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 
-class ContactEditController extends ActionController
+class ContactEditController extends AbstractContactController
 {
     public function __construct(
         protected readonly FrontendUserService $frontendUserService,
@@ -47,21 +44,11 @@ class ContactEditController extends ActionController
         }
     }
 
-    public function initializeEditAction(): void
-    {
-        $this->skipPhotoPropertyFromPropertyMapping();
-    }
-
-    public function initializeUpdateAction(): void
-    {
-        $this->skipPhotoPropertyFromPropertyMapping();
-    }
-
     public function listAction(): ResponseInterface
     {
         $contactRecords = null;
         $frontendUserId = $this->frontendUserService->getCurrentFrontendUserId();
-        if (is_int($frontendUserId) && $frontendUserId > 0) {
+        if ($frontendUserId > 0) {
             $contactRecords = $this->contactEditRepository->findAllContactRecordsOfFrontendUser($frontendUserId);
         }
 
@@ -71,7 +58,7 @@ class ContactEditController extends ActionController
                 'ContactEdit',
                 'ContactsManager',
                 ['contact' => $contactRecords[0]],
-                (int)$this->settings['formPageUid']
+                ArrayUtility::getIntegerValueByPathOrNull($this->settings, 'formPageUid')
             );
         }
 
@@ -92,6 +79,11 @@ class ContactEditController extends ActionController
         return $this->htmlResponse();
     }
 
+    public function initializeUpdateAction(): void
+    {
+        $this->initializeImagePropertyMapping('contact', 'photo');
+    }
+
     /**
      * @throws IllegalObjectTypeException
      * @throws UnknownObjectException
@@ -99,56 +91,26 @@ class ContactEditController extends ActionController
      */
     public function updateAction(ContactEdit $contact): ResponseInterface
     {
-        try {
-            $allowedContactsToEditByUser = $this->contactEditRepository->findAllAllowedContactsOfFrontendUser(
-                $this->frontendUserService->getCurrentFrontendUserId()
-            );
-            $this->formObjectService->isRecordUpdateAllowed($this->request, 'contact', $allowedContactsToEditByUser);
+        $allowedContactsToEditByUser = $this->contactEditRepository->findAllAllowedContactsOfFrontendUser(
+            $this->frontendUserService->getCurrentFrontendUserId()
+        );
+        $this->formObjectService->isRecordUpdateAllowed($this->request, 'contact', $allowedContactsToEditByUser);
 
-            $uploadedFile = $this->fileService->processUploadedPhoto($this->settings, $this->request);
-            if ($contact->getPhoto() instanceof FileReference) {
-                $this->fileService->deletePhoto($contact->getPhoto());
-            }
+        $this->eventDispatcher->dispatch(new BeforeUpdateContactEvent($contact, $this->settings));
 
-            $this->fileService->addFileReference($contact, $uploadedFile, 'tx_contacts_domain_model_contact');
+        $this->contactEditRepository->update($contact);
+        $this->persistenceManager->persistAll();
 
-            $this->eventDispatcher->dispatch(new BeforeUpdateContactEvent($contact, $this->settings));
+        $this->eventDispatcher->dispatch(new AfterUpdateContactEvent($contact, $this->settings));
 
-            $this->contactEditRepository->update($contact);
-            $this->persistenceManager->persistAll();
-
-            $this->eventDispatcher->dispatch(new AfterUpdateContactEvent($contact, $this->settings));
-        } catch (RuntimeException $exception) {
-            $this->logger->critical($exception->getMessage());
-            $this->addFlashMessage(
-                LocalizationUtility::translate('notLoggedIn', 'ContactsManager'),
-                'Error',
-                ContextualFeedbackSeverity::ERROR
-            );
-            return new ForwardResponse('edit');
-        } catch (InvalidFileUploadException $exception) {
-            $this->logger->error(
-                $exception->getMessage(),
-                [
-                    'settings' => $this->settings,
-                    'request' => $this->request,
-                ]
-            );
-            $this->addFlashMessage(
-                LocalizationUtility::translate('errorInFileUpload', 'ContactsManager'),
-                'Error',
-                ContextualFeedbackSeverity::ERROR
-            );
-            return new ForwardResponse('edit');
-        }
-
-        $this->addFlashMessage(LocalizationUtility::translate('recordIsUpdated', 'ContactsManager'));
+        $this->addFlashMessage(LocalizationUtility::translate('recordIsUpdated', 'ContactsManager') ?? '');
 
         return $this->redirect(
             'edit',
             'ContactEdit',
             'ContactsManager',
-            ['contact' => $contact]
+            ['contact' => $contact],
+            ArrayUtility::getIntegerValueByPathOrNull($this->settings, 'formPageUid')
         );
     }
 
@@ -160,8 +122,7 @@ class ContactEditController extends ActionController
         $contactValues = $this->request->hasArgument('contact') ? $this->request->getArgument('contact') : [];
 
         if (empty($contactValues) ||
-            (int)$contactValues === null ||
-            !GeneralUtility::inList($allowedContactsToEditByUser, (int)$contactValues)
+            !GeneralUtility::inList($allowedContactsToEditByUser, StringUtility::cast($contactValues) ?? '')
         ) {
             throw new UnauthorizedException('You are not allowed to delete this contact photo', 1715067545);
         }
@@ -172,31 +133,12 @@ class ContactEditController extends ActionController
 
         $this->contactEditRepository->update($contact);
 
-        return $this->redirect('edit', 'ContactEdit', 'ContactsManager', ['contact' => $contact]);
-    }
-
-    private function skipPhotoPropertyFromPropertyMapping(): void
-    {
-        if ($this->arguments->hasArgument('contact')) {
-            $this
-                ->arguments
-                ->getArgument('contact')
-                ->getPropertyMappingConfiguration()
-                ->skipProperties('photo');
-        }
-    }
-
-    private function hasObjectChanges(FrontendModelInterface $object): bool
-    {
-        if (!$this->formObjectService->isDirtyObject($object)) {
-            $this->addFlashMessage(
-                LocalizationUtility::translate('noDataChanged', 'ContactsManager'),
-                '',
-                ContextualFeedbackSeverity::NOTICE
-            );
-            return false;
-        }
-
-        return true;
+        return $this->redirect(
+            'edit',
+            'ContactEdit',
+            'ContactsManager',
+            ['contact' => $contact],
+            ArrayUtility::getIntegerValueByPathOrNull($this->settings, 'formPageUid')
+        );
     }
 }
